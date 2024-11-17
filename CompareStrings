@@ -1,0 +1,48 @@
+package cleancode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompareStrings {
+
+	public static void main(final String[] args) {
+		new CompareStrings();
+	}
+
+	public CompareStrings() {
+		String[] names = { "Bosch", "Robert", "Bengalore", "Lenovo", "Bob" };
+		PredicateFunction predicate = new PredicateFunction();
+
+		List<String> startsWithB = queryStrings(names, 'B', predicate::isStringStartsWith);
+		List<String> endsWithB = queryStrings(names, 'B', predicate::isStringEndsWith);
+
+		System.out.println("Names that start with 'B': " + startsWithB);
+		System.out.println("Names that end with 'B': " + endsWithB);
+
+	}
+
+	public static List<String> queryStrings(final String[] names, char character, final IPredicateFunction predicate) {
+		List<String> result = new ArrayList<>();
+		for (String name : names) {
+			if (predicate.apply(name, character)) {
+				result.add(name);
+			}
+		}
+		return result;
+	}
+
+	interface IPredicateFunction {
+		boolean apply(String item, char character);
+	}
+
+	class PredicateFunction {
+
+		public boolean isStringStartsWith(final String item, char character) {
+			return item.charAt(0) == character;
+		}
+
+		public boolean isStringEndsWith(final String item, char character) {
+			return item.charAt(item.length() - 1) == character;
+		}
+	}
+}
